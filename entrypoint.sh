@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#check domain and secret variables
+# Check domain and secret variables
 if [[ -z "${domain}" || -z "${secret}" ]]; then
     echo "Domain and secret cannot be empty!"
     exit 1
 fi
 
-#modify platform
+# Modify platform
 if [ -n "${platform}" ] || [ -n "${version}" ]; then
     rm -f /etc/debian_version
     if [ -n "${platform}" ]; then
@@ -18,4 +18,9 @@ if [ -n "${platform}" ] || [ -n "${version}" ]; then
     fi
 fi
 
+# Start a simple Python HTTP server to serve the Hello World page
+echo "Starting HTTP server to serve Hello World page..."
+python3 -m http.server 8080 &
+
+# Run the Nezha agent
 exec /usr/local/bin/nezha-agent -s ${domain}:${port} -p ${secret} ${args}
